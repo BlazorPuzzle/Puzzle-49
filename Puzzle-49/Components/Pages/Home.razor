@@ -1,0 +1,52 @@
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Home</PageTitle>
+
+<p>
+    This is a simple Blazor Web App with Global Server Interactivity.
+</p>
+<p>
+    We have an edit form for a simple model with two data annotations for validation.
+</p>
+<p>
+    What if we want to do some custom validation: for example, 
+    we want to <strong>not allow</strong> submitting if the name contains the
+    string "Java" with case-insensitivity.
+</p>
+<p>
+    How can we do that?
+</p>
+<hr/>
+
+<EditForm Model="@NewPerson" OnValidSubmit="@OnValidSubmit" >
+    <DataAnnotationsValidator/>
+    <div>
+        Name:
+    </div>
+    <InputText @bind-Value="@NewPerson.Name" />
+    <br />
+    <br />
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <br/>
+    <br/>
+    <ValidationSummary />
+
+</EditForm>
+
+@code 
+{
+    public Person NewPerson = new();
+
+    public void OnValidSubmit()
+    {
+        Console.WriteLine("Form submitted");
+    }
+
+    public class Person
+    {
+        [Required]
+        [StringLength(10, ErrorMessage = "Name is too long.")]
+        public string Name { get; set; }
+    }
+}
